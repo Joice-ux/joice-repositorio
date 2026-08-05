@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEA NEWS - Jornal Escolar</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="app">
+    <header class="header">
+      <div class="header-left">
+        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800" class="logo-img" alt="Logo">
+        <div>
+          <h1>Jornal Escolar</h1>
+          <span id="school-name">E.E. Prof. Lea de Freitas Monteiro</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <button id="theme-toggle" class="btn btn-icon">🌙</button>
+        <span id="user-greeting">Olá!</span>
+        <button id="logout-btn" class="btn btn-outline">Sair</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="welcome">
+        <h2 id="welcome-msg">Olá!</h2>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Buscar notícias...">
+          <button id="search-btn" class="btn btn-primary">Buscar</button>
+        </div>
+      </section>
+
+      <section class="categories">
+        <button class="cat-btn active" data-cat="Todas">Todas</button>
+        <button class="cat-btn" data-cat="Tecnologia">Tecnologia</button>
+        <button class="cat-btn" data-cat="Esporte">Esporte</button>
+        <button class="cat-btn" data-cat="Eventos">Eventos</button>
+        <button class="cat-btn" data-cat="Avisos">Avisos</button>
+      </section>
+
+      <div id="admin-actions" class="admin-actions hidden">
+        <button id="new-news-btn" class="btn btn-primary">+ Nova Notícia</button>
+        <button id="manage-users-btn" class="btn btn-outline">👥 Gerenciar Usuários</button>
+      </div>
+
+      <section id="news-grid" class="news-grid"></section>
+    </main>
+  </div>
+
+  <!-- MODAL NOTÍCIA -->
+  <div id="news-modal" class="modal hidden">
+    <div class="modal-content">
+      <button class="close-modal">×</button>
+      <img id="modal-image" src="" alt="">
+      <div class="modal-body">
+        <span id="modal-category" class="badge"></span>
+        <h2 id="modal-title"></h2>
+        <div class="meta">
+          <span id="modal-date"></span>
+          <span id="modal-views">👁️ 0</span>
+          <span id="modal-likes">❤️ 0</span>
+        </div>
+        <p id="modal-content"></p>
+        <div class="actions">
+          <button id="like-btn" class="btn btn-outline">❤️ Curtir</button>
+        </div>
+        <div class="comments-section">
+          <h3>Comentários</h3>
+          <div id="comments-list"></div>
+          <div class="add-comment">
+            <textarea id="comment-input" placeholder="Escreva um comentário..." rows="3"></textarea>
+            <button id="add-comment-btn" class="btn btn-primary">Comentar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR / NOVA NOTÍCIA -->
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-content small">
+      <button class="close-modal">×</button>
+      <h2 id="edit-modal-title">Nova Notícia</h2>
+      <form id="news-form">
+        <label>Título</label>
+        <input type="text" id="news-title" required>
+        
+        <label>Categoria</label>
+        <select id="news-category" required>
+          <option value="Tecnologia">Tecnologia</option>
+          <option value="Esporte">Esporte</option>
+          <option value="Eventos">Eventos</option>
+          <option value="Avisos">Avisos</option>
+        </select>
+        
+        <label>URL da Imagem</label>
+        <input type="text" id="news-image" placeholder="https://...">
+        
+        <label>Descrição curta</label>
+        <textarea id="news-description" required rows="2"></textarea>
+        
+        <label>Conteúdo completo</label>
+        <textarea id="news-content" required rows="6"></textarea>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline close-modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL USUÁRIOS -->
+  <div id="users-modal" class="modal hidden">
+    <div class="modal-content small">
+      <button class="close-modal">×</button>
+      <h2 style="margin-bottom: 20px;">Gerenciar Usuários</h2>
+      <div id="users-list"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

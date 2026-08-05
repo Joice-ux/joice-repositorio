@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEA NEWS - Login Gestão</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="login-screen" class="screen">
+    <button id="theme-toggle-login" class="btn btn-icon theme-toggle-top">🌙</button>
+    
+    <div class="login-card">
+      <button id="back-to-choice" class="btn-back">← Voltar</button>
+      
+      <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800" alt="Escola" class="school-photo">
+      <h1>Área de Gestão</h1>
+      <p class="school-name-login">Grêmio, Direção e Coordenação</p>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-tab="login">Entrar</button>
+        <button type="button" class="auth-tab" data-tab="register">Cadastrar</button>
+      </div>
+
+      <!-- FORM LOGIN -->
+      <form id="login-form" class="auth-form">
+        <input type="text" id="username" placeholder="Usuário" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button type="submit" class="btn btn-primary">Entrar</button>
+      </form>
+
+      <!-- FORM CADASTRO -->
+      <form id="register-form" class="auth-form hidden">
+        <input type="text" id="reg-name" placeholder="Nome completo" required>
+        <input type="text" id="reg-username" placeholder="Nome de usuário" required>
+        <input type="password" id="reg-password" placeholder="Senha (mín. 6)" required minlength="6">
+        <input type="password" id="reg-password2" placeholder="Confirmar senha" required minlength="6">
+        <select id="reg-role" required>
+          <option value="">Eu sou...</option>
+          <option value="gremio">Grêmio Estudantil</option>
+          <option value="direcao">Direção</option>
+          <option value="coordenacao">Coordenação</option>
+          <option value="admin">Administrador</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Criar conta</button>
+      </form>
+
+      <div class="demo-accounts">
+        <p><strong>Conta de demonstração:</strong></p>
+        <p>Admin → <code>admin</code> / <code>admin123</code></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== TEMA =====
+    var themeBtn = document.getElementById('theme-toggle-login');
+    var html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      themeBtn.textContent = '☀️';
+    }
+
+    themeBtn.addEventListener('click', function () {
+      var isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      themeBtn.textContent = isDark ? '🌙' : '☀️';
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    });
+
+    // ===== VOLTAR =====
+    document.getElementById('back-to-choice').addEventListener('click', function () {
+      window.location.href = 'index.html';
+    });
+
+    // ===== TABS =====
+    var tabs = document.querySelectorAll('.auth-tab');
+    var loginForm = document.getElementById('login-form');
+    var registerForm = document.getElementById('register-form');
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+
+        if (tab.getAttribute('data-tab') === 'login') {
+          loginForm.classList.remove('hidden');
+          registerForm.classList.add('hidden');
+        } else {
+          loginForm.classList.add('hidden');
+          registerForm.classList.remove('hidden');
+        }
+      });
+    });
+
+    // ===== USUÁRIOS =====
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('users') || '[]');
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // Cria admin demo se não existir
+    function initDemo() {
+      var users = getUsers();
+      var temAdmin = false;
+      for (var i = 0; i < users.length; i++) {
+        if (users[i].username === 'admin') {
+          temAdmin = true;
+          break;
+        }
+      }
+      if (!temAdmin) {
+        users.push({
+          username: 'admin',
+          password: 'admin123',
+          name: 'Administrador',
+          role: 'admin'
+        });
+        saveUsers(users);
+      }
+    }
+    initDemo();
+
+    // ===== LOGIN =====
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var username = document.getElementById('username').value.trim();
+      var password = document.getElementById('password').value;
+
+      var users = getUsers();
+      var user = null;
+      for (var i = 0; i < users.length; i++) {
+        if (users[i].username === username && users[i].password === password) {
+          user = users[i];
+          break;
+        }
+      }
+
+      var gestaoRoles = ['admin', 'gremio', 'direcao', 'coordenacao'];
+
+      if (user && gestaoRoles.indexOf(user.role) !== -1) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        window.location.href = 'app.html';
+      } else if (user) {
+        alert('Este usuário não tem permissão para a Área de Gestão!\nUse a Área da Comunidade.');
+      } else {
+        alert('Usuário ou senha incorretos!');
+      }
+    });
+
+    // ===== CADASTRO =====
+    registerForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('reg-name').value.trim();
+      var username = document.getElementById('reg-username').value.trim();
+      var password = document.getElementById('reg-password').value;
+      var password2 = document.getElementById('reg-password2').value;
+      var role = document.getElementById('reg-role').value;
+
+      if (password !== password2) {
+        alert('As senhas não coincidem!');
+        return;
+      }
+
+      var users = getUsers();
+      for (var i = 0; i < users.length; i++) {
+        if (users[i].username === username) {
+          alert('Nome de usuário já existe!');
+          return;
+        }
+      }
+
+      users.push({
+        username: username,
+        password: password,
+        name: name,
+        role: role
+      });
+      saveUsers(users);
+      alert('Conta criada com sucesso! Faça login.');
+
+      // Volta para aba de login
+      tabs[0].click();
+      document.getElementById('username').value = username;
+    });
+  </script>
+</body>
+</html>
