@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://www.facebook.com/leadefreitas.monteiro.3/');
 
 :root {
   --bg: #eff6ff;
@@ -54,7 +54,7 @@ body {
   padding: 24px;
 }
 
-/* ===== BOTÕES ===== */
+/* ===== BOTOES ===== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -364,7 +364,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* ===== CARDS DE NOTÍCIAS ===== */
+/* ===== CARDS DE NOTICIAS ===== */
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -447,6 +447,51 @@ body {
   font-size: 13px;
   color: var(--text-secondary);
 }
+
+/* Botoes Editar e Excluir nos cards */
+/* Classes básicas de botões */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+/* Cores dos novos botões */
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #bd2130;
+}
+
+/* Alinhamento dos botões dentro do formulário */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+/* Classe utilitária para ocultar os botões */
+.hidden {
+  display: none !important;
+}
+
 
 /* ===== MODAL ===== */
 .modal {
@@ -583,7 +628,7 @@ body {
   margin-top: 16px;
 }
 
-/* ===== USUÁRIOS ===== */
+/* ===== USUARIOS ===== */
 .user-item {
   display: flex;
   justify-content: space-between;

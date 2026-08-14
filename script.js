@@ -409,11 +409,13 @@ function renderUsers() {
     var btnHtml = '';
     if (user.username !== 'admin') {
       btnHtml = '<button class="btn btn-outline btn-delete-user" data-username="' + user.username + '">Excluir</button>';
-    }
+    btnHtml = '<button class="btn btn-outline btn-delete-user" data-username="' + user.username + '">Editar</button>';
+  }
     div.innerHTML =
       '<div><strong>' + user.name + '</strong><br><small>@' + user.username + ' • ' + user.role + '</small></div>' +
-      btnHtml;
-    list.appendChild(div);
+      btnHtml
+    list.appendChild(div)
+  
   });
 
   list.querySelectorAll('.btn-delete-user').forEach(function (btn) {
@@ -422,7 +424,7 @@ function renderUsers() {
       if (username) deleteUser(username);
     });
   });
-}
+};
 
 function deleteUser(username) {
   if (!confirm('Tem certeza que deseja excluir o usuário @' + username + '?')) return;
