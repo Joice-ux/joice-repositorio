@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEA NEWS - Login Comunidade</title>
+  <title>LEA NEWS - Login</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,150 +12,79 @@
     <button id="theme-toggle-login" class="btn btn-icon theme-toggle-top">🌙</button>
     
     <div class="login-card">
-      <button id="back-to-choice" class="btn-back">← Voltar</button>
+      <button id="back-to-home" class="btn-back">← Voltar</button>
       
-      <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800" alt="Escola" class="school-photo">
+      <img src="logo.png" alt="Escola" class="school-photo">
       <h1>Área da Comunidade</h1>
-      <p class="school-name-login">Alunos, Pais e Professores</p>
+      <p class="school-name-login">Alunos, Pais e Funcionários</p>
 
-      <div class="auth-tabs" id="auth-tabs">
-        <button type="button" class="auth-tab active" data-tab="login">Entrar</button>
-        <button type="button" class="auth-tab" data-tab="register">Cadastrar</button>
-      </div>
-
-      <!-- FORM LOGIN -->
       <form id="login-form" class="auth-form">
         <input type="text" id="username" placeholder="Usuário" required>
         <input type="password" id="password" placeholder="Senha" required>
         <button type="submit" class="btn btn-primary">Entrar</button>
       </form>
+      
+      <p style="margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
+        Não tem conta? Solicite o cadastro à direção da escola.
+      </p>
+    </div>
+  </div>
 
-      <!-- FORM CADASTRO -->
-      <form id="register-form" class="auth-form hidden">
-        <input type="text" id="reg-name" placeholder="Nome completo" required>
-        <input type="text" id="reg-username" placeholder="Nome de usuário" required>
-        <input type="password" id="reg-password" placeholder="Senha (mín. 6)" required minlength="6">
-        <input type="password" id="reg-password2" placeholder="Confirmar senha" required minlength="6">
-        <select id="reg-role" required>
-          <option value="">Eu sou...</option>
-          <option value="aluno">Aluno</option>
-          <option value="responsavel">Responsável</option>
-          <option value="professor">Professor</option>
-        </select>
-        <button type="submit" class="btn btn-primary">Criar conta</button>
-      </form>
-
- 
   <script>
-    // Tema
-    const themeBtn = document.getElementById('theme-toggle-login');
-    const html = document.documentElement;
-    
+    var themeBtn = document.getElementById('theme-toggle-login');
+    var html = document.documentElement;
+
     if (localStorage.getItem('theme') === 'dark') {
       html.setAttribute('data-theme', 'dark');
-       themeBtn.textContent = '☀️';
+      if (themeBtn) themeBtn.textContent = '☀️';
     }
 
-    themeBtn.addEventListener('click', () => {
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      themeBtn.textContent = isDark ? '🌙' : '☀️';
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    });
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        var isDark = html.getAttribute('data-theme') === 'dark';
+        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        themeBtn.textContent = isDark ? '🌙' : '☀️';
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      });
+    }
 
-    // Voltar
-    document.getElementById('back-to-choice').addEventListener('click', () => {
+    document.getElementById('back-to-home').addEventListener('click', function () {
       window.location.href = 'index.html';
     });
 
-    // Tabs Login / Cadastro
-    const tabs = document.querySelectorAll('.auth-tab');
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        
-        if (tab.dataset.tab === 'login') {
-          loginForm.classList.remove('hidden');
-          registerForm.classList.add('hidden');
-        } else {
-          loginForm.classList.add('hidden');
-          registerForm.classList.remove('hidden');
-        }
-      });
-    });
-
-    // ===== SISTEMA DE USUÁRIOS (localStorage) =====
-    function getUsers() {
-      return JSON.parse(localStorage.getItem('users') || '[]');
-    }
-
-    function saveUsers(users) {
-      localStorage.setItem('users', JSON.stringify(users));
-    }
-
-    // Cria usuários demo se não existirem
-    function initDemoUsers() {
-      let users = getUsers();
-      if (users.length === 0) {
-        users = [
-          { username: 'aluno', password: 'aluno123', name: 'Aluno Demo', role: 'aluno' },
-          { username: 'responsavel', password: 'resp123', name: 'Responsável Demo', role: 'responsavel' },
-          { username: 'professor', password: 'prof123', name: 'Professor Demo', role: 'professor' },
-          { username: 'admin', password: 'admin123', name: 'Administrador', role: 'admin' }
-        ];
-        saveUsers(users);
+    // Cria admin padrão se não existir
+    function initAdmin() {
+      var users = JSON.parse(localStorage.getItem('users') || '[]');
+      var temAdmin = users.find(function (u) { return u.username === 'admin'; });
+      if (!temAdmin) {
+        users.push({
+          name: 'Administrador',
+          username: 'admin',
+          password: 'admin123',
+          role: 'admin'
+        });
+        localStorage.setItem('users', JSON.stringify(users));
       }
     }
-    initDemoUsers();
+    initAdmin();
 
-    // Login
-    loginForm.addEventListener('submit', (e) => {
+    document.getElementById('login-form').addEventListener('submit', function (e) {
       e.preventDefault();
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
 
-      const users = getUsers();
-      const user = users.find(u => u.username === username && u.password === password);
+      var username = document.getElementById('username').value.trim();
+      var password = document.getElementById('password').value;
+
+      var users = JSON.parse(localStorage.getItem('users') || '[]');
+      var user = users.find(function (u) {
+        return u.username === username && u.password === password;
+      });
 
       if (user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
-        window.location.href = 'app.html';
+        window.location.href = 'index.html';
       } else {
-        alert('Usuário ou senha incorretos!');
+        alert('Usuário ou senha incorretos!\n\nSe você ainda não tem conta, solicite o cadastro à direção.');
       }
-    });
-
-    // Cadastro
-    registerForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('reg-name').value.trim();
-      const username = document.getElementById('reg-username').value.trim();
-      const password = document.getElementById('reg-password').value;
-      const password2 = document.getElementById('reg-password2').value;
-      const role = document.getElementById('reg-role').value;
-
-      if (password !== password2) {
-        alert('As senhas não coincidem!');
-        return;
-      }
-
-      const users = getUsers();
-      if (users.find(u => u.username === username)) {
-        alert('Nome de usuário já existe!');
-        return;
-      }
-
-      users.push({ username, password, name, role });
-      saveUsers(users);
-      alert('Conta criada com sucesso! Faça login.');
-      
-      // Volta para aba de login
-      tabs[0].click();
-      document.getElementById('username').value = username;
     });
   </script>
 </body>

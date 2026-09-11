@@ -3,65 +3,227 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEA NEWS - Escolha a Área</title>
+  <title>LEA NEWS - Jornal Escolar</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <div id="choice-screen" class="screen">
-    <button id="theme-toggle-choice" class="btn btn-icon theme-toggle-top">🌙</button>
-    
-    <div class="choice-container">
-      <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800" alt="Escola" class="school-photo-large">
-      <h1>LEA NEWS</h1>
-      <p class="school-name-login">E.E. Prof. Lea de Freitas Monteiro</p>
-      <p class="choice-subtitle">Escolha a área que deseja acessar</p>
-      
-      <div class="choice-cards">
-        <div class="choice-card" id="btn-comunidade">
-          <div class="choice-icon">👨‍🎓</div>
-          <h2>Área da Comunidade</h2>
-          <p>Alunos, Pais e Professores</p>
-          <button class="btn btn-primary">Entrar</button>
+  <div id="app">
+    <header class="header">
+      <div class="header-left">
+        <img src="logo.png" class="logo-img" alt="Logo">
+        <div>
+          <h1>Jornal Escolar</h1>
+          <span id="school-name">E.E. Prof. Lea de Freitas Monteiro</span>
         </div>
+      </div>
+      <div class="header-right">
+        <button id="theme-toggle" class="btn btn-icon">🌙</button>
+        <span id="user-greeting" class="hidden">Olá!</span>
         
-        <div class="choice-card gestão" id="btn-gestao">
-          <div class="choice-icon">⚙️</div>
-          <h2>Área de Gestão</h2>
-          <p>Grêmio, Direção e Coordenação</p>
-          <button class="btn btn-dark">Entrar</button>
+        <button id="login-btn" class="btn btn-outline">Entrar</button>
+        <button id="logout-btn" class="btn btn-outline hidden">Sair</button>
+        
+        <a href="login-gestao.html" class="btn btn-primary" style="margin-left: 8px;">Área Restrita</a>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="welcome">
+        <h2 id="welcome-msg">Bem-vindo ao Jornal Escolar</h2>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Buscar notícias...">
+          <button id="search-btn" class="btn btn-primary">Buscar</button>
+        </div>
+      </section>
+
+      <section class="categories">
+        <button class="cat-btn active" data-cat="Todas">Todas</button>
+        <button class="cat-btn" data-cat="Tecnologia">Tecnologia</button>
+        <button class="cat-btn" data-cat="Esporte">Esporte</button>
+        <button class="cat-btn" data-cat="Eventos">Eventos</button>
+        <button class="cat-btn" data-cat="Avisos">Avisos</button>
+      </section>
+
+      <div id="admin-actions" class="admin-actions hidden">
+        <button id="new-news-btn" class="btn btn-primary">+ Publicar Notícia</button>
+        <button id="manage-users-btn" class="btn btn-outline">👥 Gerenciar Usuários</button>
+      </div>
+
+      <!-- NOTÍCIA EM DESTAQUE -->
+      <section id="featured-news" class="featured-news hidden">
+        <div class="featured-badge">⭐ Em destaque</div>
+        <div class="featured-content">
+          <img id="featured-img" src="" alt="">
+          <div class="featured-text">
+            <span id="featured-category" class="badge"></span>
+            <h2 id="featured-title"></h2>
+            <p id="featured-description"></p>
+            <div class="featured-meta">
+              <span id="featured-date"></span>
+              <span id="featured-views"></span>
+              <span id="featured-likes"></span>
+            </div>
+            <button type="button" id="featured-read-btn" class="btn btn-primary">Ler notícia</button>
+            <div id="featured-admin-btns" class="card-admin-btns hidden" style="margin-top: 12px;">
+              <button type="button" id="featured-edit-btn" class="btn-edit">Editar</button>
+              <button type="button" id="featured-delete-btn" class="btn-delete">Excluir</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="news-grid" class="news-grid"></section>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-left">
+          <strong>LEA NEWS</strong>
+          <p>E.E. Prof. Lea de Freitas Monteiro</p>
+          <p>Araraquara - SP</p>
+          <p>Endereço: Av. Alagoas, 45 - Jardim Silvania (Vila Xavier), 14811-100</p>
+          <p>Telefone: (16) 3337-1233</p>
+        </div>
+        <div class="footer-center">
+          <a href="index.html">Início</a>
+          <a href="sobre.html">Sobre o Jornal</a>
+          <a href="login.html">Entrar</a>
+          <a href="login-gestao.html">Área Restrita</a>
+        </div>
+        <div class="footer-right">
+          <p>© 2026 Jornal Escolar</p>
+          <p>Desenvolvido pelos alunos(as):</p>
+          <p>Joice Vitória da Silva Souza, Silas Henrique Moura, Mabbelli Lima, Ana Clara Blandina de Souza Patrício e Letícia Rakelly Melo Mendes.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- MODAL NOTÍCIA -->
+  <div id="news-modal" class="modal hidden">
+    <div class="modal-content">
+      <button type="button" class="close-modal" title="Fechar">×</button>
+
+      <div id="modal-gallery-container" style="position: relative; text-align: center; padding: 10px 0;">
+        <button type="button" id="prev-photo" class="gallery-nav prev">‹</button>
+        <button type="button" id="next-photo" class="gallery-nav next">›</button>
+        <div id="photo-counter"></div>
+      </div>
+
+      <div class="modal-body">
+        <span id="modal-category" class="badge"></span>
+        <h2 id="modal-title"></h2>
+        <div class="meta">
+          <span id="modal-date"></span>
+          <span id="modal-views">👁️ 0</span>
+          <span id="modal-likes">❤️ 0</span>
+        </div>
+        <p id="modal-content"></p>
+        <div class="actions">
+          <button type="button" id="like-btn" class="btn btn-outline">❤️ Curtir</button>
+        </div>
+        <div class="comments-section">
+          <h3>Comentários</h3>
+          <div id="comments-list"></div>
+          
+          <div id="comment-area" class="hidden">
+            <div class="add-comment">
+              <textarea id="comment-input" placeholder="Escreva um comentário..." rows="3"></textarea>
+              <button type="button" id="add-comment-btn" class="btn btn-primary">Comentar</button>
+            </div>
+          </div>
+          
+          <div id="login-to-comment">
+            <p style="margin-bottom: 10px;">Faça login para comentar</p>
+            <a href="login.html" class="btn btn-primary">Entrar</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    // Tema
-    const themeBtn = document.getElementById('theme-toggle-choice');
-    const html = document.documentElement;
-    
-    // Carrega tema salvo
-    if (localStorage.getItem('theme') === 'dark') {
-      html.setAttribute('data-theme', 'dark');
-      themeBtn.textContent = '☀️';
-    }
+  <!-- MODAL NOVA / EDITAR NOTÍCIA -->
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-content small">
+      <button type="button" class="close-modal" title="Fechar">×</button>
+      <h2 id="edit-modal-title">Nova Notícia</h2>
+      <form id="news-form">
+        <label>Título</label>
+        <input type="text" id="news-title" required>
+        
+        <label>Categoria</label>
+        <select id="news-category" required>
+          <option value="Tecnologia">Tecnologia</option>
+          <option value="Esporte">Esporte</option>
+          <option value="Eventos">Eventos</option>
+          <option value="Avisos">Avisos</option>
+        </select>
+        
+        <label>Mídia da Notícia (Fotos e Vídeos)</label>
+        <div style="margin-bottom: 8px;">
+          <input type="file" id="news-image" accept="image/*,video/*" multiple style="display: none;">
+          <button type="button" id="choose-photos-btn" class="btn btn-outline" style="width: 100%;">
+            📷🎬 Escolher Fotos ou Vídeos
+          </button>
+        </div>
+        <small style="color: var(--text-secondary); display: block; margin-bottom: 8px;">
+          Você pode adicionar várias fotos e vídeos. A primeira será a capa.
+        </small>
+        <div id="image-preview" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;"></div>
+        
+        <label>Descrição curta</label>
+        <textarea id="news-description" required rows="2"></textarea>
+        
+        <label>Conteúdo completo</label>
+        <textarea id="news-content" required rows="6"></textarea>
 
-    themeBtn.addEventListener('click', () => {
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      themeBtn.textContent = isDark ? '🌙' : '☀️';
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    });
+        <label style="display:flex; align-items:center; gap:8px; margin-top:20px; cursor:pointer;">
+          <input type="checkbox" id="news-destaque" style="width:auto; margin:0;">
+          Marcar como notícia em destaque
+        </label>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-    // Navegação
-    document.getElementById('btn-comunidade').addEventListener('click', () => {
-      window.location.href = 'login.html';
-    });
+  <!-- MODAL USUÁRIOS -->
+  <div id="users-modal" class="modal hidden">
+    <div class="modal-content small">
+      <button type="button" class="close-modal" title="Fechar">×</button>
+      <h2 style="margin-bottom: 16px;">Gerenciar Usuários</h2>
+      
+      <form id="add-user-form" style="margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">
+        <label>Nome</label>
+        <input type="text" id="new-user-name" required placeholder="Nome completo">
+        
+        <label>Usuário</label>
+        <input type="text" id="new-user-username" required placeholder="usuario">
+        
+        <label>Senha</label>
+        <input type="password" id="new-user-password" required placeholder="Senha">
+        
+        <label>Tipo</label>
+        <select id="new-user-role">
+          <option value="aluno">Aluno / Pai / Comunidade</option>
+          <option value="gremio">Grêmio</option>
+          <option value="direcao">Direção</option>
+          <option value="coordenacao">Coordenação</option>
+          <option value="admin">Admin</option>
+        </select>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">+ Cadastrar Usuário</button>
+      </form>
+      
+      <div id="users-list"></div>
+    </div>
+  </div>
 
-    document.getElementById('btn-gestao').addEventListener('click', () => {
-      window.location.href = 'gestao_login.html';
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
-
