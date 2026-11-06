@@ -3,88 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEA NEWS - Login</title>
+  <title>LEA NEWS - Entrar</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <div id="login-screen" class="screen">
-    <button id="theme-toggle-login" class="btn btn-icon theme-toggle-top">🌙</button>
-    
+  <div class="screen">
+    <button id="theme-toggle-login" class="btn btn-icon theme-toggle-top" type="button">🌙</button>
     <div class="login-card">
-      <button id="back-to-home" class="btn-back">← Voltar</button>
-      
-      <img src="logo.png" alt="Escola" class="school-photo">
+      <button class="btn-back" type="button" onclick="location.href='index.html'">← Voltar ao jornal</button>
+      <div class="logo-mark big">📰</div>
       <h1>Área da Comunidade</h1>
-      <p class="school-name-login">Alunos, Pais e Funcionários</p>
-
+      <p class="school-name-login">Alunos (RA) e responsáveis (CPF)</p>
+      <p class="school-name-login" style="margin-top:-14px;font-size:13px;">E.E. Prof. Lea de Freitas Monteiro</p>
+      <div id="login-erro" class="login-erro"></div>
       <form id="login-form" class="auth-form">
-        <input type="text" id="username" placeholder="Usuário" required>
-        <input type="password" id="password" placeholder="Senha" required>
+        <input type="text" id="identificador" placeholder="RA (aluno) ou CPF (responsável)" required autocomplete="username">
+        <input type="password" id="password" placeholder="Senha" required autocomplete="current-password">
         <button type="submit" class="btn btn-primary">Entrar</button>
       </form>
-      
-      <p style="margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
-        Não tem conta? Solicite o cadastro à direção da escola.
+      <p class="login-hint">
+        Leia o jornal sem login.<br>
+        Entre só para <strong>curtir</strong> e <strong>comentar</strong>.<br>
+        Cadastro só pela escola.<br>
+        Gestão: <a href="login-gestao.html">Área Restrita</a>
       </p>
+      <p class="login-demo">Demo aluno: <code>202600123</code> / <code>123456</code><br>Demo responsável: <code>12345678901</code> / <code>123456</code></p>
     </div>
   </div>
-
   <script>
+    (function initDemoUsers() {
+      var users = JSON.parse(localStorage.getItem('users') || '[]');
+      function has(field, val) {
+        return users.some(function (u) { return u[field] === val; });
+      }
+      if (!has('username', 'admin')) {
+        users.push({ name: 'Administrador', username: 'admin', password: 'admin123', role: 'admin', tipo: 'gestao' });
+      }
+      if (!has('ra', '202600123')) {
+        users.push({ name: 'João Silva', ra: '202600123', password: '123456', role: 'aluno', tipo: 'aluno', username: '202600123' });
+      }
+      if (!has('cpf', '12345678901')) {
+        users.push({ name: 'Maria Silva', cpf: '12345678901', password: '123456', role: 'aluno', tipo: 'responsavel', username: '12345678901' });
+      }
+      localStorage.setItem('users', JSON.stringify(users));
+    })();
+
     var themeBtn = document.getElementById('theme-toggle-login');
-    var html = document.documentElement;
-
     if (localStorage.getItem('theme') === 'dark') {
-      html.setAttribute('data-theme', 'dark');
-      if (themeBtn) themeBtn.textContent = '☀️';
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeBtn.textContent = '☀️';
     }
-
-    if (themeBtn) {
-      themeBtn.addEventListener('click', function () {
-        var isDark = html.getAttribute('data-theme') === 'dark';
-        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        themeBtn.textContent = isDark ? '🌙' : '☀️';
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      });
-    }
-
-    document.getElementById('back-to-home').addEventListener('click', function () {
-      window.location.href = 'index.html';
+    themeBtn.addEventListener('click', function () {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+      themeBtn.textContent = dark ? '🌙' : '☀️';
+      localStorage.setItem('theme', dark ? 'light' : 'dark');
     });
 
-    // Cria admin padrão se não existir
-    function initAdmin() {
-      var users = JSON.parse(localStorage.getItem('users') || '[]');
-      var temAdmin = users.find(function (u) { return u.username === 'admin'; });
-      if (!temAdmin) {
-        users.push({
-          name: 'Administrador',
-          username: 'admin',
-          password: 'admin123',
-          role: 'admin'
-        });
-        localStorage.setItem('users', JSON.stringify(users));
-      }
+    function mostrarErro(msg) {
+      var el = document.getElementById('login-erro');
+      el.classList.add('show');
+      el.textContent = msg;
     }
-    initAdmin();
 
     document.getElementById('login-form').addEventListener('submit', function (e) {
       e.preventDefault();
-
-      var username = document.getElementById('username').value.trim();
+      var raw = document.getElementById('identificador').value.trim();
       var password = document.getElementById('password').value;
-
+      var idNum = raw.replace(/\D/g, '');
       var users = JSON.parse(localStorage.getItem('users') || '[]');
-      var user = users.find(function (u) {
-        return u.username === username && u.password === password;
-      });
+      var user = null;
 
-      if (user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        window.location.href = 'index.html';
-      } else {
-        alert('Usuário ou senha incorretos!\n\nSe você ainda não tem conta, solicite o cadastro à direção.');
+      for (var i = 0; i < users.length; i++) {
+        var u = users[i];
+        if (u.cpf && String(u.cpf).replace(/\D/g, '') === idNum && idNum.length === 11 && u.password === password) {
+          user = u; break;
+        }
+        if (u.ra && (String(u.ra) === raw || String(u.ra) === idNum) && u.password === password) {
+          user = u; break;
+        }
+        if (u.username === raw && u.password === password) {
+          user = u; break;
+        }
       }
+
+      if (!user) {
+        mostrarErro('RA/CPF não cadastrado ou senha incorreta. Fale com a secretaria.');
+        return;
+      }
+
+      localStorage.setItem('currentUser', JSON.stringify({
+        name: user.name,
+        username: user.username || user.ra || user.cpf,
+        role: user.role,
+        tipo: user.tipo || 'aluno',
+        ra: user.ra || null,
+        cpf: user.cpf || null
+      }));
+      window.location.href = 'index.html';
     });
   </script>
 </body>

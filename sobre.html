@@ -3,89 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sobre o Jornal - LEA NEWS</title>
+  <title>Léa News — Sobre e Quem somos</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
   <div id="app">
-    <header class="header">
-      <div class="header-left">
-        <img src="logo.png" class="logo-img" alt="Logo">
-        <div>
-          <h1>Jornal Escolar</h1>
-          <span>E.E. Prof. Lea de Freitas Monteiro</span>
-        </div>
+    <header class="paper-header">
+      <div class="paper-header-top">
+        <button id="theme-toggle" class="btn btn-icon" type="button" title="Tema">🌙</button>
+        <a href="index.html" class="btn-paper">← Voltar ao jornal</a>
       </div>
-      <div class="header-right">
-        <button id="theme-toggle" class="btn btn-icon">🌙</button>
-        <a href="index.html" class="btn btn-outline">← Voltar</a>
+      <div class="masthead">
+        <h1 class="masthead-title">LÉA NEWS</h1>
+        <p class="masthead-sub">Sobre o site · Quem somos</p>
       </div>
     </header>
 
-    <main class="main">
-      <section class="about-section">
-        <h2>Sobre o Jornal</h2>
-        
-        <div class="about-card">
-          <h3>📰 O que é o LEA NEWS?</h3>
-          <p>
-            O <strong>LEA NEWS</strong> é o jornal digital da 
-            <strong>E.E. Prof. Lea de Freitas Monteiro</strong>. 
-            Ele foi criado para aproximar alunos, pais, professores e a comunidade escolar, 
-            divulgando notícias, eventos, esportes, avisos e conquistas da nossa escola.
-          </p>
-        </div>
-
-        <div class="about-card">
-          <h3>🎯 Nosso objetivo</h3>
-          <p>
-            Informar de forma rápida, organizada e acessível tudo o que acontece na escola, 
-            incentivando a participação da comunidade e valorizando as atividades realizadas 
-            pelos alunos e pela equipe escolar.
-          </p>
-        </div>
-
-        <div class="about-card">
-          <h3>👥 Quem pode participar?</h3>
-          <ul>
-            <li><strong>Alunos e pais:</strong> podem ler as notícias, curtir e comentar (com login).</li>
-            <li><strong>Gestão (Grêmio, Direção e Coordenação):</strong> podem publicar, editar e gerenciar o conteúdo.</li>
-          </ul>
-        </div>
-
-        <div class="about-card">
-          <h3>🏫 A escola</h3>
-          <p>
-            <strong>E.E. Prof. Lea de Freitas Monteiro</strong><br>
-             <p>Endereço: Av. Alagoas, 45- Jardim Silvania (Vila Xavier), Araraquara-sp, 14811-100
-             </p>
-             <p>  Telefone:(16) 3337-1233
+    <main class="main paper-main">
+      <section class="about-section" id="sobre" style="border-top:none;margin-top:0;padding-top:0;">
+        <div class="about-grid">
+          <div class="about-block">
+            <h2 class="about-title">Sobre o site</h2>
+            <p>
+              O <strong>Léa News</strong> é o jornal digital da
+              <strong>E.E. Prof. Lea de Freitas Monteiro</strong>.
+              Aqui a comunidade escolar acompanha notícias, eventos, esportes e avisos
+              em um só lugar — com leitura livre e interação para quem faz parte da escola.
             </p>
-          </p>
+            <p>
+              Alunos, responsáveis e professores podem ler tudo sem login.
+              Curtir e comentar pedem RA ou CPF cadastrado pela gestão.
+              A publicação de matérias fica na Área Restrita.
+            </p>
+          </div>
+          <div class="about-block">
+            <h2 class="about-title">Quem somos</h2>
+            <p>
+              Somos o grupo responsável pelo desenvolvimento deste jornal escolar,
+              criado como projeto de conclusão de curso, unindo comunicação e tecnologia
+              para aproximar a escola da comunidade.
+            </p>
+            <p class="about-names"><strong>Equipe:</strong> Joice, Silas, Mabbelli, Ana Clara e Letícia</p>
+          </div>
         </div>
 
-        <div class="about-card">
-          <h3>💻 Sobre o sistema</h3>
-          <p>
-            Este jornal digital foi desenvolvido como projeto escolar, 
-            utilizando HTML, CSS e JavaScript, com foco em praticidade e usabilidade.
-          </p>
+        <h3 class="about-photos-title">Nosso grupo</h3>
+        <p class="about-photos-hint">Coloque suas fotos na pasta do site (foto-joice.jpg, foto-silas.jpg, etc.)</p>
+        <div class="team-photos">
+          <figure class="team-card">
+            <div class="team-photo-wrap">
+              <img src="fototeste2.jpeg" alt="Joice"
+                   onerror="this.onerror=null;this.src='https://placehold.co/400x400/1a1a1a/f4f0e6?text=Joice';">
+            </div>
+            <figcaption>Joice</figcaption>
+          </figure>
+          <figure class="team-card">
+            <div class="team-photo-wrap">
+              <img src="Silas.jpeg" alt="Silas"
+                   onerror="this.onerror=null;this.src='https://placehold.co/400x400/1a1a1a/f4f0e6?text=Silas';">
+            </div>
+            <figcaption>Silas</figcaption>
+          </figure>
+          <figure class="team-card">
+            <div class="team-photo-wrap">
+              <img src="Mabelli.jpeg" alt="Mabelli"
+                   onerror="this.onerror=null;this.src='https://placehold.co/400x400/1a1a1a/f4f0e6?text=Mabbelli';">
+            </div>
+            <figcaption>Mabelli</figcaption>
+          </figure>
+          <figure class="team-card">
+            <div class="team-photo-wrap">
+              <img src="fototeste.jpeg" alt="Ana Clara"
+                   onerror="this.onerror=null;this.src='https://placehold.co/400x400/1a1a1a/f4f0e6?text=Ana+Clara';">
+            </div>
+            <figcaption>Ana Clara</figcaption>
+          </figure>
+          <figure class="team-card">
+            <div class="team-photo-wrap">
+              <img src="Leticia.jpeg" alt="Letícia"
+                   onerror="this.onerror=null;this.src='https://placehold.co/400x400/1a1a1a/f4f0e6?text=Leticia';">
+            </div>
+            <figcaption>Letícia</figcaption>
+          </figure>
         </div>
+
+        <p style="margin-top:28px;text-align:center;">
+          <a href="index.html" class="btn-paper btn-paper-fill">Voltar às notícias</a>
+        </p>
       </section>
     </main>
 
-    <footer class="footer">
+    <footer class="footer paper-footer">
       <div class="footer-content">
         <div class="footer-left">
-          <strong>LEA NEWS</strong>
-          <p>E.E. Prof. Lea de Freitas Monteiro
-           
-          </p>
+          <strong>LÉA NEWS</strong>
+          <p>E.E. Prof. Lea de Freitas Monteiro</p>
         </div>
         <div class="footer-center">
           <a href="index.html">Início</a>
-          <a href="sobre.html">Sobre o Jornal</a>
+          <a href="sobre.html">Sobre / Quem somos</a>
+          <a href="login-gestao.html">Área Restrita</a>
         </div>
         <div class="footer-right">
           <p>© 2026 Jornal Escolar</p>
@@ -93,22 +110,18 @@
       </div>
     </footer>
   </div>
-
   <script>
-    var html = document.documentElement;
     var themeBtn = document.getElementById('theme-toggle');
-
     if (localStorage.getItem('theme') === 'dark') {
-      html.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
       if (themeBtn) themeBtn.textContent = '☀️';
     }
-
     if (themeBtn) {
       themeBtn.addEventListener('click', function () {
-        var isDark = html.getAttribute('data-theme') === 'dark';
-        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        themeBtn.textContent = isDark ? '🌙' : '☀️';
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+        themeBtn.textContent = dark ? '🌙' : '☀️';
+        localStorage.setItem('theme', dark ? 'light' : 'dark');
       });
     }
   </script>

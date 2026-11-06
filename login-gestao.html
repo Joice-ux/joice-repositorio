@@ -3,87 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEA NEWS - Login Gestão</title>
+  <title>LEA NEWS - Área Restrita</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <div id="login-screen" class="screen">
-    <button id="theme-toggle-login" class="btn btn-icon theme-toggle-top">🌙</button>
-    
+  <div class="screen">
+    <button id="theme-toggle-login" class="btn btn-icon theme-toggle-top" type="button">🌙</button>
     <div class="login-card">
-      <button id="back-to-choice" class="btn-back">← Voltar</button>
-      
-      <img src="logo.png" alt="Escola" class="school-photo">
+      <button class="btn-back" type="button" onclick="location.href='index.html'">← Voltar ao jornal</button>
+      <span class="login-badge">Área Restrita</span>
+      <div class="logo-mark big">📰</div>
       <h1>Área de Gestão</h1>
       <p class="school-name-login">Grêmio, Direção e Coordenação</p>
-
+      <div id="login-erro" class="login-erro"></div>
       <form id="login-form" class="auth-form">
-        <input type="text" id="username" placeholder="Usuário" required>
-        <input type="password" id="password" placeholder="Senha" required>
+        <input type="text" id="username" placeholder="Usuário" required autocomplete="username">
+        <input type="password" id="password" placeholder="Senha" required autocomplete="current-password">
         <button type="submit" class="btn btn-primary">Entrar</button>
       </form>
+      <p class="login-demo">
+        Usuário: <code>admin</code><br>
+        Senha: <code>admin123</code>
+      </p>
+      <button type="button" id="btn-copy-pass" class="btn-paper" style="width:100%;margin-top:10px;font-size:0.75rem;">
+        Copiar senha do admin
+      </button>
     </div>
   </div>
-
   <script>
-    var themeBtn = document.getElementById('theme-toggle-login');
-    var html = document.documentElement;
+    // Senha oficial do admin (única fonte)
+    var ADMIN_USER = 'admin';
+    var ADMIN_PASS = 'admin123';
 
-    if (localStorage.getItem('theme') === 'dark') {
-      html.setAttribute('data-theme', 'dark');
-      if (themeBtn) themeBtn.textContent = '☀️';
-    }
-
-    if (themeBtn) {
-      themeBtn.addEventListener('click', function () {
-        var isDark = html.getAttribute('data-theme') === 'dark';
-        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        themeBtn.textContent = isDark ? '🌙' : '☀️';
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      });
-    }
-
-    document.getElementById('back-to-choice').addEventListener('click', function () {
-      window.location.href = 'index.html';
-    });
-
-    function initAdmin() {
-      var users = JSON.parse(localStorage.getItem('users') || '[]');
-      var temAdmin = users.find(function (u) { return u.username === 'admin'; });
-      if (!temAdmin) {
+    // Sempre grava o admin certo no navegador
+    (function () {
+      var users = [];
+      try {
+        users = JSON.parse(localStorage.getItem('users') || '[]');
+        if (!Array.isArray(users)) users = [];
+      } catch (e) {
+        users = [];
+      }
+      var found = false;
+      for (var i = 0; i < users.length; i++) {
+        if (String(users[i].username || '').toLowerCase() === 'admin') {
+          users[i].username = ADMIN_USER;
+          users[i].password = ADMIN_PASS;
+          users[i].role = 'admin';
+          users[i].tipo = 'gestao';
+          users[i].name = users[i].name || 'Administrador';
+          found = true;
+        }
+      }
+      if (!found) {
         users.push({
           name: 'Administrador',
-          username: 'admin',
-          password: 'admin123',
-          role: 'admin'
+          username: ADMIN_USER,
+          password: ADMIN_PASS,
+          role: 'admin',
+          tipo: 'gestao'
         });
-        localStorage.setItem('users', JSON.stringify(users));
       }
-    }
-    initAdmin();
+      localStorage.setItem('users', JSON.stringify(users));
+    })();
 
+    var themeBtn = document.getElementById('theme-toggle-login');
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      if (themeBtn) themeBtn.textContent = '☀️';
+    }
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+        themeBtn.textContent = dark ? '🌙' : '☀️';
+        localStorage.setItem('theme', dark ? 'light' : 'dark');
+      });
+    }
+
+    document.getElementById('btn-copy-pass').addEventListener('click', function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ADMIN_PASS).then(function () {
+          alert('Senha copiada! Cole no campo Senha (Ctrl+V).');
+        }).catch(function () {
+          prompt('Copie a senha:', ADMIN_PASS);
+        });
+      } else {
+        prompt('Copie a senha:', ADMIN_PASS);
+      }
+    });
+
+    var gestaoRoles = ['admin', 'gremio', 'direcao', 'coordenacao'];
     document.getElementById('login-form').addEventListener('submit', function (e) {
       e.preventDefault();
-
-      var username = document.getElementById('username').value.trim();
+      var username = document.getElementById('username').value.trim().toLowerCase();
       var password = document.getElementById('password').value;
+      var erro = document.getElementById('login-erro');
 
-      var users = JSON.parse(localStorage.getItem('users') || '[]');
-      var user = users.find(function (u) {
-        return u.username === username && u.password === password;
-      });
-
-      var gestaoRoles = ['admin', 'gremio', 'direcao', 'coordenacao'];
-
-      if (user && gestaoRoles.indexOf(user.role) !== -1) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
+      // Login direto do admin (não depende de localStorage estranho)
+      if (username === ADMIN_USER && password === ADMIN_PASS) {
+        localStorage.setItem('currentUser', JSON.stringify({
+          name: 'Administrador',
+          username: 'admin',
+          role: 'admin',
+          tipo: 'gestao'
+        }));
         window.location.href = 'index.html';
-      } else if (user) {
-        alert('Este usuário não tem permissão para a Área de Gestão!\nUse a Área da Comunidade.');
-      } else {
-        alert('Usuário ou senha incorretos!');
+        return;
       }
+
+      var users = [];
+      try {
+        users = JSON.parse(localStorage.getItem('users') || '[]');
+      } catch (err) {
+        users = [];
+      }
+
+      var user = null;
+      for (var i = 0; i < users.length; i++) {
+        var u = users[i];
+        var uName = String(u.username || '').toLowerCase();
+        if (uName === username && u.password === password) {
+          user = u;
+          break;
+        }
+      }
+
+      if (!user || gestaoRoles.indexOf(user.role) === -1) {
+        erro.classList.add('show');
+        erro.textContent = 'Usuário ou senha incorretos. Use admin e a senha mostrada abaixo (ou clique em Copiar senha).';
+        return;
+      }
+
+      localStorage.setItem('currentUser', JSON.stringify({
+        name: user.name,
+        username: user.username,
+        role: user.role,
+        tipo: user.tipo || 'gestao'
+      }));
+      window.location.href = 'index.html';
     });
   </script>
 </body>

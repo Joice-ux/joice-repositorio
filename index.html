@@ -3,99 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEA NEWS - Jornal Escolar</title>
+  <title>Léa News — Jornal Escolar</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
   <div id="app">
-    <header class="header">
-      <div class="header-left">
-        <img src="logo.png" class="logo-img" alt="Logo">
-        <div>
-          <h1>Jornal Escolar</h1>
-          <span id="school-name">E.E. Prof. Lea de Freitas Monteiro</span>
+
+    <!-- CAPA ESTILO JORNAL -->
+    <header class="paper-header">
+      <div class="paper-header-top">
+        <div class="notif-wrap">
+          <button id="notif-btn" class="btn btn-icon" type="button" title="Notificações">🔔</button>
+          <span id="notif-badge" class="notif-badge hidden">0</span>
+          <div id="notif-panel" class="notif-panel hidden">
+            <div class="notif-panel-head">
+              <strong>Notificações</strong>
+              <button type="button" id="notif-clear" class="notif-link">Limpar</button>
+            </div>
+            <div id="notif-list" class="notif-list"></div>
+            <button type="button" id="notif-enable-browser" class="notif-enable">Ativar alertas do navegador</button>
+          </div>
         </div>
+        <button id="theme-toggle" class="btn btn-icon" type="button" title="Tema">🌙</button>
+        <span id="user-greeting" class="user-greeting hidden">Olá!</span>
+        <button id="login-btn" class="btn-paper" type="button">Entrar</button>
+        <button id="logout-btn" class="btn-paper hidden" type="button">Sair</button>
       </div>
-      <div class="header-right">
-        <button id="theme-toggle" class="btn btn-icon">🌙</button>
-        <span id="user-greeting" class="hidden">Olá!</span>
-        
-        <button id="login-btn" class="btn btn-outline">Entrar</button>
-        <button id="logout-btn" class="btn btn-outline hidden">Sair</button>
-        
-        <a href="login-gestao.html" class="btn btn-primary" style="margin-left: 8px;">Área Restrita</a>
+      <div class="masthead">
+        <h1 class="masthead-title">LÉA NEWS</h1>
+        <p class="masthead-sub" id="school-name">E.E. Prof. Lea de Freitas Monteiro · Araraquara-SP</p>
+        <div class="masthead-meta">
+          <span>Edição escolar</span>
+          <span>Grátis</span>
+        </div>
       </div>
     </header>
 
-    <main class="main">
-      <section class="welcome">
-        <h2 id="welcome-msg">Bem-vindo ao Jornal Escolar</h2>
-        <div class="search-box">
-          <input type="text" id="search-input" placeholder="Buscar notícias...">
-          <button id="search-btn" class="btn btn-primary">Buscar</button>
-        </div>
-      </section>
+    <div class="ultima-hora">
+      <strong>ÚLTIMA HORA</strong>
+      <div class="ultima-hora-track">
+        <span class="ultima-hora-texto">Festival de Inverno reúne a escola · Time feminino classifica para a final · Feira de Ciências com dezenas de projetos · Laboratórios de informática inaugurados ·&nbsp;</span>
+        <span class="ultima-hora-texto">Festival de Inverno reúne a escola · Time feminino classifica para a final · Feira de Ciências com dezenas de projetos · Laboratórios de informática inaugurados ·&nbsp;</span>
+      </div>
+    </div>
+
+    <div class="paper-toolbar">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Buscar nesta edição...">
+        <button id="search-btn" class="btn-paper btn-paper-fill" type="button">Buscar</button>
+      </div>
+      <div class="toolbar-actions">
+        <a href="sobre.html" class="btn-paper">Quem somos</a>
+        <a href="login-gestao.html" class="btn-paper btn-paper-fill">Área Restrita</a>
+      </div>
+    </div>
+
+    <main class="main paper-main">
+      <p id="welcome-msg" class="welcome-line">Bem-vindo ao Jornal Escolar — leia tudo sem login. Curtir e comentar só com RA ou CPF.</p>
 
       <section class="categories">
-        <button class="cat-btn active" data-cat="Todas">Todas</button>
-        <button class="cat-btn" data-cat="Tecnologia">Tecnologia</button>
-        <button class="cat-btn" data-cat="Esporte">Esporte</button>
-        <button class="cat-btn" data-cat="Eventos">Eventos</button>
-        <button class="cat-btn" data-cat="Avisos">Avisos</button>
+        <button class="cat-btn active" data-cat="Todas" type="button">Todas</button>
+        <button class="cat-btn" data-cat="Tecnologia" type="button">Tecnologia</button>
+        <button class="cat-btn" data-cat="Esporte" type="button">Esporte</button>
+        <button class="cat-btn" data-cat="Eventos" type="button">Eventos</button>
+        <button class="cat-btn" data-cat="Avisos" type="button">Avisos</button>
       </section>
 
       <div id="admin-actions" class="admin-actions hidden">
-        <button id="new-news-btn" class="btn btn-primary">+ Publicar Notícia</button>
-        <button id="manage-users-btn" class="btn btn-outline">👥 Gerenciar Usuários</button>
+        <button id="new-news-btn" class="btn-paper btn-paper-fill" type="button">+ Publicar Notícia</button>
+        <button id="manage-users-btn" class="btn-paper" type="button">Gerenciar Usuários</button>
       </div>
 
-      <!-- NOTÍCIA EM DESTAQUE -->
-      <section id="featured-news" class="featured-news hidden">
-        <div class="featured-badge">⭐ Em destaque</div>
-        <div class="featured-content">
-          <img id="featured-img" src="" alt="">
-          <div class="featured-text">
-            <span id="featured-category" class="badge"></span>
-            <h2 id="featured-title"></h2>
-            <p id="featured-description"></p>
-            <div class="featured-meta">
-              <span id="featured-date"></span>
-              <span id="featured-views"></span>
-              <span id="featured-likes"></span>
+      <!-- VÁRIOS DESTAQUES (estilo portal) -->
+      <section id="featured-news" class="destaques-portal hidden">
+        <div class="destaques-label">Em destaque</div>
+        <div class="destaques-layout">
+          <article class="destaque-principal" id="destaque-principal">
+            <div class="destaque-principal-img-wrap">
+              <img id="featured-img" src="" alt="">
             </div>
-            <button type="button" id="featured-read-btn" class="btn btn-primary">Ler notícia</button>
-            <div id="featured-admin-btns" class="card-admin-btns hidden" style="margin-top: 12px;">
-              <button type="button" id="featured-edit-btn" class="btn-edit">Editar</button>
-              <button type="button" id="featured-delete-btn" class="btn-delete">Excluir</button>
+            <div class="destaque-principal-text">
+              <span id="featured-category" class="secao-label"></span>
+              <h2 id="featured-title"></h2>
+              <p id="featured-description" class="linha-fina"></p>
+              <div class="featured-meta">
+                <span id="featured-date"></span>
+                <span id="featured-views"></span>
+                <span id="featured-likes"></span>
+              </div>
+              <div id="featured-admin-btns" class="card-admin-btns hidden" style="margin-top:10px;">
+                <button type="button" id="featured-edit-btn" class="btn-edit">Editar</button>
+                <button type="button" id="featured-delete-btn" class="btn-delete">Excluir</button>
+              </div>
             </div>
-          </div>
+          </article>
+          <div class="destaques-lista" id="destaques-lista"></div>
         </div>
       </section>
 
       <section id="news-grid" class="news-grid"></section>
+
     </main>
 
-    <!-- RODAPÉ -->
-    <footer class="footer">
+    <footer class="footer paper-footer">
       <div class="footer-content">
         <div class="footer-left">
-          <strong>LEA NEWS</strong>
+          <strong>LÉA NEWS</strong>
           <p>E.E. Prof. Lea de Freitas Monteiro</p>
           <p>Araraquara - SP</p>
-          <p>Endereço: Av. Alagoas, 45 - Jardim Silvania (Vila Xavier), 14811-100</p>
-          <p>Telefone: (16) 3337-1233</p>
+          <p>Av. Alagoas, 45 - Jardim Silvania (Vila Xavier)</p>
+          <p>(16) 3337-1233</p>
         </div>
         <div class="footer-center">
           <a href="index.html">Início</a>
-          <a href="sobre.html">Sobre o Jornal</a>
-          <a href="login.html">Entrar</a>
+          <a href="sobre.html">Sobre / Quem somos</a>
+          <a href="login.html">Entrar (RA/CPF)</a>
           <a href="login-gestao.html">Área Restrita</a>
         </div>
         <div class="footer-right">
           <p>© 2026 Jornal Escolar</p>
-          <p>Desenvolvido pelos alunos(as):</p>
-          <p>Joice Vitória da Silva Souza, Silas Henrique Moura, Mabbelli Lima, Ana Clara Blandina de Souza Patrício e Letícia Rakelly Melo Mendes.</p>
+          <p>Joice, Silas, Mabbelli, Ana Clara e Letícia</p>
         </div>
       </div>
     </footer>
@@ -105,13 +132,12 @@
   <div id="news-modal" class="modal hidden">
     <div class="modal-content">
       <button type="button" class="close-modal" title="Fechar">×</button>
-
-      <div id="modal-gallery-container" style="position: relative; text-align: center; padding: 10px 0;">
+      <div id="modal-gallery-container" style="position:relative;text-align:center;padding:10px 0;">
         <button type="button" id="prev-photo" class="gallery-nav prev">‹</button>
         <button type="button" id="next-photo" class="gallery-nav next">›</button>
         <div id="photo-counter"></div>
+        <div id="photo-thumbs" class="photo-thumbs"></div>
       </div>
-
       <div class="modal-body">
         <span id="modal-category" class="badge"></span>
         <h2 id="modal-title"></h2>
@@ -122,29 +148,27 @@
         </div>
         <p id="modal-content"></p>
         <div class="actions">
-          <button type="button" id="like-btn" class="btn btn-outline">❤️ Curtir</button>
+          <button type="button" id="like-btn" class="btn-paper">❤️ Curtir</button>
         </div>
         <div class="comments-section">
           <h3>Comentários</h3>
           <div id="comments-list"></div>
-          
           <div id="comment-area" class="hidden">
             <div class="add-comment">
               <textarea id="comment-input" placeholder="Escreva um comentário..." rows="3"></textarea>
-              <button type="button" id="add-comment-btn" class="btn btn-primary">Comentar</button>
+              <button type="button" id="add-comment-btn" class="btn-paper btn-paper-fill">Comentar</button>
             </div>
           </div>
-          
           <div id="login-to-comment">
-            <p style="margin-bottom: 10px;">Faça login para comentar</p>
-            <a href="login.html" class="btn btn-primary">Entrar</a>
+            <p style="margin-bottom:10px;">Faça login para curtir e comentar</p>
+            <a href="login.html" class="btn-paper btn-paper-fill">Entrar com RA ou CPF</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL NOVA / EDITAR NOTÍCIA -->
+  <!-- MODAL NOVA / EDITAR -->
   <div id="edit-modal" class="modal hidden">
     <div class="modal-content small">
       <button type="button" class="close-modal" title="Fechar">×</button>
@@ -152,7 +176,6 @@
       <form id="news-form">
         <label>Título</label>
         <input type="text" id="news-title" required>
-        
         <label>Categoria</label>
         <select id="news-category" required>
           <option value="Tecnologia">Tecnologia</option>
@@ -160,33 +183,24 @@
           <option value="Eventos">Eventos</option>
           <option value="Avisos">Avisos</option>
         </select>
-        
-        <label>Mídia da Notícia (Fotos e Vídeos)</label>
-        <div style="margin-bottom: 8px;">
-          <input type="file" id="news-image" accept="image/*,video/*" multiple style="display: none;">
-          <button type="button" id="choose-photos-btn" class="btn btn-outline" style="width: 100%;">
-            📷🎬 Escolher Fotos ou Vídeos
-          </button>
+        <label>Mídia (Fotos e Vídeos)</label>
+        <div style="margin-bottom:8px;">
+          <input type="file" id="news-image" accept="image/*,video/*" multiple style="display:none;">
+          <button type="button" id="choose-photos-btn" class="btn-paper" style="width:100%;">📷🎬 Escolher Fotos ou Vídeos</button>
         </div>
-        <small style="color: var(--text-secondary); display: block; margin-bottom: 8px;">
-          Você pode adicionar várias fotos e vídeos. A primeira será a capa.
-        </small>
-        <div id="image-preview" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;"></div>
-        
+        <small style="color:var(--text-secondary);display:block;margin-bottom:8px;">Várias fotos/vídeos. A primeira é a capa.</small>
+        <div id="image-preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;"></div>
         <label>Descrição curta</label>
         <textarea id="news-description" required rows="2"></textarea>
-        
         <label>Conteúdo completo</label>
         <textarea id="news-content" required rows="6"></textarea>
-
-        <label style="display:flex; align-items:center; gap:8px; margin-top:20px; cursor:pointer;">
-          <input type="checkbox" id="news-destaque" style="width:auto; margin:0;">
-          Marcar como notícia em destaque
+        <label style="display:flex;align-items:center;gap:8px;margin-top:20px;cursor:pointer;">
+          <input type="checkbox" id="news-destaque" style="width:auto;margin:0;">
+          Marcar como destaque (pode ter várias)
         </label>
-        
         <div class="form-actions">
-          <button type="button" class="btn btn-outline btn-cancelar">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Salvar</button>
+          <button type="button" class="btn-paper btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn-paper btn-paper-fill">Salvar</button>
         </div>
       </form>
     </div>
@@ -196,28 +210,44 @@
   <div id="users-modal" class="modal hidden">
     <div class="modal-content small">
       <button type="button" class="close-modal" title="Fechar">×</button>
-      <h2 style="margin-bottom: 16px;">Gerenciar Usuários</h2>
-      
-      <form id="add-user-form" style="margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">
-        <label>Nome</label>
-        <input type="text" id="new-user-name" required placeholder="Nome completo">
-        
-        <label>Usuário</label>
-        <input type="text" id="new-user-username" required placeholder="usuario">
-        
-        <label>Senha</label>
-        <input type="password" id="new-user-password" required placeholder="Senha">
-        
-        <label>Tipo</label>
+      <h2 style="margin-bottom:16px;">Gerenciar Usuários</h2>
+      <form id="add-user-form" style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+        <label>Tipo de usuário</label>
         <select id="new-user-role">
           <option value="aluno">Aluno</option>
-          <option value="professor">Professpr</option>
-          <option value="responsável">Responsável</option>
+          <option value="responsavel">Responsável</option>
+          <option value="professor">Professor</option>
+          <option value="gremio">Grêmio</option>
+          <option value="direcao">Direção</option>
+          <option value="admin">Admin</option>
         </select>
-        
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">+ Cadastrar Usuário</button>
+
+        <label>Nome</label>
+        <input type="text" id="new-user-name" required placeholder="Nome completo">
+
+        <div id="field-ra">
+          <label>RA do aluno</label>
+          <input type="text" id="new-user-ra" placeholder="Ex: 202600123">
+        </div>
+
+        <div id="field-cpf" class="hidden">
+          <label>CPF do responsável</label>
+          <input type="text" id="new-user-cpf" placeholder="Somente números (11 dígitos)">
+        </div>
+
+        <div id="field-username" class="hidden">
+          <label>Usuário de acesso</label>
+          <input type="text" id="new-user-username" placeholder="Ex: professor.silva">
+        </div>
+
+        <label>Senha</label>
+        <input type="password" id="new-user-password" required placeholder="Senha">
+
+        <p id="user-form-hint" style="font-size:0.8rem;color:var(--text-secondary);margin-top:10px;">
+          Aluno: nome + RA + senha
+        </p>
+        <button type="submit" class="btn-paper btn-paper-fill" style="width:100%;margin-top:10px;">+ Cadastrar</button>
       </form>
-      
       <div id="users-list"></div>
     </div>
   </div>
