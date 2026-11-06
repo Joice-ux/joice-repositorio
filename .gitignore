@@ -1,0 +1,4 @@
+.secret_key
+uploads/
+__pycache__/
+db_config.json

@@ -19,7 +19,7 @@
       <form id="login-form" class="auth-form">
         <input type="text" id="identificador" placeholder="RA (aluno) ou CPF (responsável)" required autocomplete="username">
         <input type="password" id="password" placeholder="Senha" required autocomplete="current-password">
-        <button type="submit" class="btn btn-primary">Entrar</button>
+        <button type="submit" id="login-submit" class="btn btn-primary">Entrar</button>
       </form>
       <p class="login-hint">
         Leia o jornal sem login.<br>
@@ -27,27 +27,10 @@
         Cadastro só pela escola.<br>
         Gestão: <a href="login-gestao.html">Área Restrita</a>
       </p>
-      <p class="login-demo">Demo aluno: <code>202600123</code> / <code>123456</code><br>Demo responsável: <code>12345678901</code> / <code>123456</code></p>
     </div>
   </div>
+  <script src="api.js"></script>
   <script>
-    (function initDemoUsers() {
-      var users = JSON.parse(localStorage.getItem('users') || '[]');
-      function has(field, val) {
-        return users.some(function (u) { return u[field] === val; });
-      }
-      if (!has('username', 'admin')) {
-        users.push({ name: 'Administrador', username: 'admin', password: 'admin123', role: 'admin', tipo: 'gestao' });
-      }
-      if (!has('ra', '202600123')) {
-        users.push({ name: 'João Silva', ra: '202600123', password: '123456', role: 'aluno', tipo: 'aluno', username: '202600123' });
-      }
-      if (!has('cpf', '12345678901')) {
-        users.push({ name: 'Maria Silva', cpf: '12345678901', password: '123456', role: 'aluno', tipo: 'responsavel', username: '12345678901' });
-      }
-      localStorage.setItem('users', JSON.stringify(users));
-    })();
-
     var themeBtn = document.getElementById('theme-toggle-login');
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -68,39 +51,23 @@
 
     document.getElementById('login-form').addEventListener('submit', function (e) {
       e.preventDefault();
-      var raw = document.getElementById('identificador').value.trim();
-      var password = document.getElementById('password').value;
-      var idNum = raw.replace(/\D/g, '');
-      var users = JSON.parse(localStorage.getItem('users') || '[]');
-      var user = null;
-
-      for (var i = 0; i < users.length; i++) {
-        var u = users[i];
-        if (u.cpf && String(u.cpf).replace(/\D/g, '') === idNum && idNum.length === 11 && u.password === password) {
-          user = u; break;
+      var btn = document.getElementById('login-submit');
+      btn.disabled = true;
+      btn.textContent = 'Entrando...';
+      apiFetch('/api/login', {
+        method: 'POST',
+        body: {
+          identificador: document.getElementById('identificador').value.trim(),
+          senha: document.getElementById('password').value
         }
-        if (u.ra && (String(u.ra) === raw || String(u.ra) === idNum) && u.password === password) {
-          user = u; break;
-        }
-        if (u.username === raw && u.password === password) {
-          user = u; break;
-        }
-      }
-
-      if (!user) {
-        mostrarErro('RA/CPF não cadastrado ou senha incorreta. Fale com a secretaria.');
-        return;
-      }
-
-      localStorage.setItem('currentUser', JSON.stringify({
-        name: user.name,
-        username: user.username || user.ra || user.cpf,
-        role: user.role,
-        tipo: user.tipo || 'aluno',
-        ra: user.ra || null,
-        cpf: user.cpf || null
-      }));
-      window.location.href = 'index.html';
+      }).then(function (r) {
+        salvarSessao(r.token, r.user);
+        window.location.href = 'index.html';
+      }).catch(function (err) {
+        mostrarErro(err.message);
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+      });
     });
   </script>
 </body>

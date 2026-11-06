@@ -927,3 +927,6 @@ button, input, select, textarea, a.btn-paper {
   width: 64px;
   height: 64px;
 }
+
+/* mantém as quebras de linha do texto da notícia */
+#modal-content { white-space: pre-line; }
